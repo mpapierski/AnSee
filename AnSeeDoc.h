@@ -9,30 +9,34 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include <wx/docview.h>
+
 #include "Sprite.h"
 #include "LeftView.h"
 #include "AnSeeView.h"
 
 typedef struct FileSearch {
-CString cPathName;
-CString cFileTitle;
+wxString cPathName;
+wxString cFileTitle;
 } FileSearch;
 
-class CAnSeeDoc : public CDocument
+#define DEF_MAXSPRITES 100
+
+class CAnSeeDoc : public wxDocument
 {
 protected: // create from serialization only
 	CAnSeeDoc();
-	DECLARE_DYNCREATE(CAnSeeDoc)
+	DECLARE_DYNAMIC_CLASS(CAnSeeDoc)
 
 // Attributes
 public:
-	BOOL m_bNeedToOpen;
+	bool m_bNeedToOpen;
 	CSprite *m_pSpr[DEF_MAXSPRITES];
 	int m_iTotalimage;
-	CString m_cPathName;
-	CString m_cFolderName;
-	CString m_cFileTitle;
-	CString m_cFileSize;
+	wxString m_cPathName;
+	wxString m_cFolderName;
+	wxString m_cFileTitle;
+	wxString m_cFileSize;
 	FileSearch m_filelist[400];
 	int m_CurFileIndex;
 	int m_MaxFile;
@@ -41,22 +45,24 @@ public:
 	int m_zoom;
 	CLeftView *m_pLeftView;
 	CAnSeeView *m_pRightView;
-	CDC *m_pDC;
+	wxDC *m_pDC;
 
 // Operations
 public:
 	void OnOpenFile();
-	void OnKeyDown( UINT nChar );
-	void OnKeyUp( UINT nChar );
+	void OnKeyDown( wxKeyEvent & nChar );
+	void OnKeyUp( wxKeyEvent & nChar );
 	void SetLeftView( CLeftView* pView );
-	void SetRightView( CAnSeeView *pView, CDC *pDC );
+	void SetRightView( CAnSeeView *pView, wxDC *pDC );
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAnSeeDoc)
 	public:
-	virtual BOOL OnNewDocument();
+	virtual bool OnNewDocument();
+#if 0
 	virtual void Serialize(CArchive& ar);
+#endif
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -72,14 +78,14 @@ protected:
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CAnSeeDoc)
-	afx_msg void OnEditCopy();
-	afx_msg void OnEditCut();
-	afx_msg void OnEditPaste();
-	afx_msg void OnFileOpen();
-	afx_msg void OnUpdateMenu(CCmdUI* pCmdUI);
-	afx_msg void OnFileSave();
+	void OnEditCopy();
+	void OnEditCut();
+	void OnEditPaste();
+	void OnFileOpen();
+	void OnUpdateMenu(wxUpdateUIEvent & pCmdUI);
+	void OnFileSave();
 	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+	DECLARE_EVENT_TABLE()
 };
 
 /////////////////////////////////////////////////////////////////////////////

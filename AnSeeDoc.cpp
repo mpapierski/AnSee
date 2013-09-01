@@ -1,7 +1,7 @@
 // AnSeeDoc.cpp : implementation of the CAnSeeDoc class
 //
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "AnSee.h"
 
 #include "AnSeeDoc.h"
@@ -15,21 +15,21 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeDoc
 
-IMPLEMENT_DYNCREATE(CAnSeeDoc, CDocument)
+IMPLEMENT_DYNAMIC_CLASS(CAnSeeDoc, wxDocument)
 
-BEGIN_MESSAGE_MAP(CAnSeeDoc, CDocument)
+BEGIN_EVENT_TABLE(CAnSeeDoc, wxDocument)
 	//{{AFX_MSG_MAP(CAnSeeDoc)
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
-	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateMenu)
-	ON_COMMAND(ID_FILE_SAVE, OnFileSave)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateMenu)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateMenu)
-	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE, OnUpdateMenu)
+	//ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
+	//ON_COMMAND(ID_EDIT_CUT, OnEditCut)
+	//ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
+	//ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
+	//ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateMenu)
+	//ON_COMMAND(ID_FILE_SAVE, OnFileSave)
+	//ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateMenu)
+	//ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateMenu)
+	//ON_UPDATE_COMMAND_UI(ID_FILE_SAVE, OnUpdateMenu)
 	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
+END_EVENT_TABLE()
 
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeDoc construction/destruction
@@ -46,6 +46,7 @@ CAnSeeDoc::CAnSeeDoc()
 	for( int i=0 ; i<DEF_MAXSPRITES ; i++ ) m_pSpr[i] = NULL;
 	m_CurFileIndex = 0;
 	m_MaxFile = 0;
+#if 0
 	CAnSeeApp *pApp = (CAnSeeApp*)AfxGetApp();
 	if( pApp->m_strCommand != "" )
 	{
@@ -80,7 +81,8 @@ CAnSeeDoc::CAnSeeDoc()
 			}
 		}
 		m_bNeedToOpen = TRUE;
-	}	
+	}
+#endif
 }
 
 CAnSeeDoc::~CAnSeeDoc()
@@ -95,9 +97,9 @@ CAnSeeDoc::~CAnSeeDoc()
 	}
 }
 
-BOOL CAnSeeDoc::OnNewDocument()
+bool CAnSeeDoc::OnNewDocument()
 {
-	if (!CDocument::OnNewDocument())
+	if (!wxDocument::OnNewDocument())
 		return FALSE;
 	for( int i=0 ; i<DEF_MAXSPRITES ; i++ )
 	{
@@ -110,11 +112,12 @@ BOOL CAnSeeDoc::OnNewDocument()
 	m_iTotalimage = 0;
 	m_CurFileIndex = 0;
 	m_MaxFile = 0;
-	m_cPathName = "";
+#if 0
+	m_cPathName  = "";
 	m_cFileTitle = "";
 	m_cFileSize = "";
 	m_cFolderName = "";
-
+#endif
 	return TRUE;
 }
 
@@ -122,7 +125,7 @@ BOOL CAnSeeDoc::OnNewDocument()
 
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeDoc serialization
-
+#if 0
 void CAnSeeDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
@@ -132,6 +135,7 @@ void CAnSeeDoc::Serialize(CArchive& ar)
 	{
 	}
 }
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeDoc diagnostics
@@ -156,7 +160,7 @@ void CAnSeeDoc::SetLeftView( CLeftView* pView )
 	m_pLeftView = pView;
 }
 
-void CAnSeeDoc::SetRightView( CAnSeeView* pView, CDC* pDC )
+void CAnSeeDoc::SetRightView( CAnSeeView* pView, wxDC* pDC )
 {
 	m_pDC = pDC;
 	m_pRightView = pView;
@@ -165,6 +169,7 @@ void CAnSeeDoc::SetRightView( CAnSeeView* pView, CDC* pDC )
 
 void CAnSeeDoc::OnFileOpen() 
 {
+#if 0
 	CFileDialog dlg( TRUE, NULL, "*.pak", OFN_FILEMUSTEXIST | OFN_READONLY, "*.pak |", NULL );
 	if( m_cPathName != "" ) strcpy( dlg.m_ofn.lpstrFile, m_cPathName );
 	if( dlg.DoModal() != IDOK ) return;
@@ -199,10 +204,12 @@ void CAnSeeDoc::OnFileOpen()
 	}
 	OnOpenFile();
 	m_pLeftView->ChangeTree();
+#endif
 }
 
 void CAnSeeDoc::OnOpenFile()
 {
+#if 0
 	CFile fp;
 	HANDLE hFileRead;
 	DWORD  nCount;
@@ -229,13 +236,13 @@ void CAnSeeDoc::OnOpenFile()
 	if( memcmp(cBuff, "<Pak file header>", 17 ) != 0 )
 	{
 		if (hFileRead != INVALID_HANDLE_VALUE) CloseHandle(hFileRead);
-		MessageBox( NULL, "Pak FileÀÌ ¾Æ´Õ´Ï´Ù.", "Error", MB_OK );
+		MessageBox( NULL, "Pak Fileï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½.", "Error", MB_OK );
 		return;
 	}
 	SetFilePointer(hFileRead, 20, NULL, FILE_BEGIN);
 	ReadFile(hFileRead, (char *)&m_iTotalimage, 4, &nCount, NULL);
 	CloseHandle(hFileRead);
-	// ÃÑ ¸î°³ÀÇ ÆÄÀÏ·Î ±¸¼ºµÇ¾îÀÖ´ÂÁö ¾Ë¾Æº»´Ù.
+	// ï¿½ï¿½ ï¿½î°³ï¿½ï¿½ ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë¾Æºï¿½ï¿½ï¿½.
 	for( int i=0 ; i<DEF_MAXSPRITES ; i++ )
 	{
 		if( m_pSpr[i] != NULL )
@@ -253,7 +260,7 @@ void CAnSeeDoc::OnOpenFile()
 			m_pSpr[iNthFile] = NULL;
 		}
 	}
-	// È­ÀÏÀ» ´Ý´Â´Ù.
+	// È­ï¿½ï¿½ï¿½ï¿½ ï¿½Ý´Â´ï¿½.
 	m_view = 0;
 	m_frameview = -1;
 	m_zoom = 100;
@@ -266,10 +273,12 @@ void CAnSeeDoc::OnOpenFile()
 		m_pRightView->RefreshView();
 	}
 	EndWaitCursor();
+#endif
 }
 
 void CAnSeeDoc::OnEditCopy() 
 {
+#if 0
 	BeginWaitCursor();
 	for( int view=0 ; view<m_iTotalimage ; view++ )
 	{
@@ -292,25 +301,25 @@ void CAnSeeDoc::OnEditCopy()
 		if( memcmp(cBuff, "<Pak file header>", 17 ) != 0 )
 		{
 			if (hFileRead != INVALID_HANDLE_VALUE) CloseHandle(hFileRead);
-			MessageBox( NULL, "Pak FileÀÌ ¾Æ´Õ´Ï´Ù.", "Error", MB_OK );
+			MessageBox( NULL, "Pak Fileï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½.", "Error", MB_OK );
 			return;
 		}
-		// ÀÌÁ¦ ½ºÇÁ¶óÀÌÆ® ÆÄÀÏ(*.ASD)ÀÌ ½ÃÀÛÇÏ´Â À§Ä¡¸¦ Ã£´Â´Ù. 
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½(*.ASD)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Ã£ï¿½Â´ï¿½. 
 		SetFilePointer(hFileRead, 24 + view*8, NULL, FILE_BEGIN);
 		ReadFile(hFileRead, (char *)&dwASDfileLoc,  4, &nCount, NULL);
 		ReadFile(hFileRead, (char *)&dwASDfileSize, 4, &nCount, NULL);
-		// ½ºÇÁ¶óÀÌÆ® È­ÀÏ Çì´õ¸¦ ÀÐ¾î È®ÀÎÇÑ´Ù. 
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½. 
 		SetFilePointer(hFileRead, dwASDfileLoc, NULL, FILE_BEGIN);
 		ReadFile(hFileRead, (char *)cBuff,  100, &nCount, NULL);
-		// Çì´õ°¡ ÀÏÄ¡ÇÏÁö ¾ÊÀ¸¸é ÀÐÀ» ¼ö ¾ø´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½.
 		if (memcmp(cBuff, "<Sprite File Header>", 20) != 0) {
 			if (hFileRead != INVALID_HANDLE_VALUE) CloseHandle(hFileRead);
-			MessageBox( NULL, "ÀÌ PAKÆÄÀÏÀº Àß¸øµÈ SpriteÆÄÀÏÀ» °®°í ÀÖ½À´Ï´Ù.", "Error", MB_OK );
+			MessageBox( NULL, "ï¿½ï¿½ PAKï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß¸ï¿½ï¿½ Spriteï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.", "Error", MB_OK );
 			return;
 		}
-		// ÀüÃ¼ ÇÁ·¹ÀÓ¼ö ÀÐ´Â´Ù.
+		// ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¼ï¿½ ï¿½Ð´Â´ï¿½.
 		ReadFile(hFileRead, (char *)&iTotalFrame,  4, &nCount, NULL);
-		// ºñÆ®¸Ê È­ÀÏÀÇ À§Ä¡¸¦ ¹Ì¸® °è»êÇØ ³õ´Â´Ù.
+		// ï¿½ï¿½Æ®ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½.
 		dwBitmapFileStartLoc = dwASDfileLoc  + (108 + (12*iTotalFrame));
 		dwBitmapFileSize     = dwASDfileSize - (108 + (12*iTotalFrame));
 		char *cSprite, *cBitmap;
@@ -335,14 +344,16 @@ void CAnSeeDoc::OnEditCopy()
 		CloseHandle( hFileBitmap );
 		delete[] cBitmap;
 		cBitmap = NULL;
-		// È­ÀÏÀ» ´Ý´Â´Ù.
+		// È­ï¿½ï¿½ï¿½ï¿½ ï¿½Ý´Â´ï¿½.
 		if (hFileRead != INVALID_HANDLE_VALUE) CloseHandle(hFileRead);
 	}
 	EndWaitCursor();
+#endif
 }
 
 void CAnSeeDoc::OnEditPaste() 
 {
+#if 0
 	BeginWaitCursor();
 	CString cSpdFileName;
 	HANDLE hFileSprite, hFileBitmap, hFileASD;
@@ -368,7 +379,7 @@ void CAnSeeDoc::OnEditPaste()
 		ReadFile( hFileSprite, cBuffer, 26, &nCount, NULL );
 		if (strcmp(cBuffer,"<Sprite Info File Header>") != 0)
 		{
-			MessageBox( NULL, "SpriteÆÄÀÏ¿¡ ¹®Á¦°¡ ÀÖ½À´Ï´Ù.", "Error", MB_OK );
+			MessageBox( NULL, "Spriteï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.", "Error", MB_OK );
 			continue;
 		}
 		ReadFile( hFileSprite, cBmpFileName, 54, &nCount, NULL );
@@ -379,7 +390,7 @@ void CAnSeeDoc::OnEditPaste()
 		hFileBitmap = CreateFile(cBmpFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 		if( hFileBitmap == NULL )
 		{
-			MessageBox( NULL, "BitmapÆÄÀÏÀ» ¿©´Âµ¥ ½ÇÆÐÇÏ¿´½À´Ï´Ù.", "Error", MB_OK );
+			MessageBox( NULL, "Bitmapï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.", "Error", MB_OK );
 			continue;
 		}
 		bmpfilesize = GetFileSize( hFileBitmap, NULL );
@@ -434,25 +445,27 @@ void CAnSeeDoc::OnEditPaste()
 	CloseHandle( hFilePak );
 	OnOpenFile();
 	EndWaitCursor();
+#endif
 }
 
 void CAnSeeDoc::OnEditCut() 
 {
+#if 0
 	CFileDialog dlg( TRUE, NULL, "*.asd", OFN_FILEMUSTEXIST | OFN_READONLY, "*.asd |", NULL );
-	if( dlg.DoModal() != IDOK ) return;////ºÒ·¯µéÀÏ ASDÆÄÀÏÀ» ¾ò¾î¿Â´Ù.
+	if( dlg.DoModal() != IDOK ) return;////ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ ASDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½.
 	DWORD  nCount, dwASDfileLoc, dwASDfileSize;
 	for( int i=0 ; i<DEF_MAXSPRITES ; i++ )
 	{
 		delete m_pSpr[i];
 		m_pSpr[i] = NULL;
 	}
-	int iRet = MessageBox( NULL, "ÇöÀçÀÇ ASD¸¦ ¹é¾÷¹ÞÀ¸½Ã°Ú½À´Ï±î?", "ÁÖÀÇ»çÇ×", MB_YESNO );
+	int iRet = MessageBox( NULL, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ASDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã°Ú½ï¿½ï¿½Ï±ï¿½?", "ï¿½ï¿½ï¿½Ç»ï¿½ï¿½ï¿½", MB_YESNO );
 
 	HANDLE hFileRead, hFileCopy;
-	//hFileCopy´Â ³¢¾î³ÖÀ» ASDÆÄÀÏÀÇ ÇÚµé..
+	//hFileCopyï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ASDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½..
 	hFileCopy = CreateFile(dlg.GetPathName(), GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 	DWORD filesize2 = GetFileSize( hFileCopy, NULL );
-	//ASDÆÄÀÏÀ» ´Ý´Â´Ù.
+	//ASDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý´Â´ï¿½.
 	hFileRead = CreateFile(m_cPathName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 	DWORD filesize = GetFileSize( hFileRead, NULL );
 	if (hFileRead == INVALID_HANDLE_VALUE) return;
@@ -465,7 +478,7 @@ void CAnSeeDoc::OnEditCut()
 	ReadFile(hFileRead, (char *)&m_iTotalimage, 4, &nCount, NULL);
 	memcpy(cWriteBuffer+20, (char*)&m_iTotalimage, 4 );
 	cp += (24+m_iTotalimage*8);
-	// ÃÑ ¸î°³ÀÇ ÆÄÀÏ·Î ±¸¼ºµÇ¾îÀÖ´ÂÁö ¾Ë¾Æº»´Ù.
+	// ï¿½ï¿½ ï¿½î°³ï¿½ï¿½ ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë¾Æºï¿½ï¿½ï¿½.
 	DWORD filelength = 24+m_iTotalimage*8;
 	for( int iNthFile=0 ; iNthFile < m_iTotalimage ; iNthFile++ )
 	{
@@ -494,7 +507,7 @@ void CAnSeeDoc::OnEditCut()
 			SetFilePointer( hFileCopy, 0, NULL, FILE_BEGIN );
 			ReadFile(hFileCopy, (char*)cCopyBuffer, filesize2, &nCount, NULL);
 			memcpy( cp, cCopyBuffer, filesize2 );
-			//cCopyBuffer´Â ASDÆÄÀÏ·Î ºÎÅÍ ÀÐ¾îµéÀÎ ³»¿ë..
+			//cCopyBufferï¿½ï¿½ ASDï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..
 			CloseHandle( hFileCopy );
 			cp += filesize2;
 			memcpy( (cWriteBuffer+24+(8*iNthFile)), (char*)&filelength, 4 );
@@ -505,7 +518,7 @@ void CAnSeeDoc::OnEditCut()
 		}
 		else
 		{
-			// ÀÌÁ¦ ½ºÇÁ¶óÀÌÆ® ÆÄÀÏ(*.ASD)ÀÌ ½ÃÀÛÇÏ´Â À§Ä¡¸¦ Ã£´Â´Ù. 
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½(*.ASD)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Ã£ï¿½Â´ï¿½. 
 			SetFilePointer(hFileRead, 24 + iNthFile*8, NULL, FILE_BEGIN);
 			ReadFile(hFileRead, (char *)&dwASDfileLoc,  4, &nCount, NULL);
 			ReadFile(hFileRead, (char *)&dwASDfileSize, 4, &nCount, NULL);
@@ -532,11 +545,13 @@ void CAnSeeDoc::OnEditCut()
 	cWriteBuffer = NULL;
 	OnOpenFile();
 	m_pLeftView->ChangeTree();
+#endif
 }
 
 
 void CAnSeeDoc::OnFileSave() 
 {
+#if 0
 	HANDLE hFileRead, hFileSave;
 	DWORD  nCount, dwASDfileLoc, dwASDfileSize;
 	char cSaveName[256];
@@ -544,10 +559,10 @@ void CAnSeeDoc::OnFileSave()
 	if (hFileRead == INVALID_HANDLE_VALUE) return;
 	SetFilePointer(hFileRead, 20, NULL, FILE_BEGIN);
 	ReadFile(hFileRead, (char *)&m_iTotalimage, 4, &nCount, NULL);
-	// ÃÑ ¸î°³ÀÇ ÆÄÀÏ·Î ±¸¼ºµÇ¾îÀÖ´ÂÁö ¾Ë¾Æº»´Ù.
+	// ï¿½ï¿½ ï¿½î°³ï¿½ï¿½ ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë¾Æºï¿½ï¿½ï¿½.
 	for( int iNthFile=0 ; iNthFile < m_iTotalimage ; iNthFile++ )
 	{
-		// ÀÌÁ¦ ½ºÇÁ¶óÀÌÆ® ÆÄÀÏ(*.ASD)ÀÌ ½ÃÀÛÇÏ´Â À§Ä¡¸¦ Ã£´Â´Ù. 
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½(*.ASD)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Ã£ï¿½Â´ï¿½. 
 		SetFilePointer(hFileRead, 24 + iNthFile*8, NULL, FILE_BEGIN);
 		ReadFile(hFileRead, (char *)&dwASDfileLoc,  4, &nCount, NULL);
 		ReadFile(hFileRead, (char *)&dwASDfileSize, 4, &nCount, NULL);
@@ -564,18 +579,22 @@ void CAnSeeDoc::OnFileSave()
 		cWriteBuffer = NULL;
 		CloseHandle(hFileSave);
 	}
-	// È­ÀÏÀ» ´Ý´Â´Ù.
+	// È­ï¿½ï¿½ï¿½ï¿½ ï¿½Ý´Â´ï¿½.
 	if (hFileRead != INVALID_HANDLE_VALUE) CloseHandle(hFileRead);
+#endif
 }
 
-void CAnSeeDoc::OnUpdateMenu(CCmdUI* pCmdUI) 
+void CAnSeeDoc::OnUpdateMenu(wxUpdateUIEvent & pCmdUI)
 {
+#if 0
 	if( m_pSpr[m_view] == NULL ) pCmdUI->Enable( FALSE );
 	else pCmdUI->Enable( TRUE );
+#endif
 }
 
-void CAnSeeDoc::OnKeyDown( UINT nChar )
+void CAnSeeDoc::OnKeyDown( wxKeyEvent & event )
 {
+#if 0
 	if( nChar == VK_ADD )
 	{
 		if( m_zoom == 25 ) m_zoom = 50;
@@ -644,10 +663,12 @@ void CAnSeeDoc::OnKeyDown( UINT nChar )
 		m_cFileTitle = m_filelist[m_CurFileIndex].cFileTitle;
 		if( m_pRightView != NULL ) m_pRightView->RefreshView();
 	}
+#endif
 }
 
-void CAnSeeDoc::OnKeyUp( UINT nChar )
+void CAnSeeDoc::OnKeyUp( wxKeyEvent & ev )
 {
+#if 0
 	if( nChar == VK_NEXT || nChar == VK_PRIOR || nChar==VK_UP || nChar==VK_DOWN )
 	{
 		BeginWaitCursor();
@@ -657,4 +678,5 @@ void CAnSeeDoc::OnKeyUp( UINT nChar )
 		if( m_pLeftView != NULL ) m_pLeftView->SetSelectedItem();
 		EndWaitCursor();
 	}
+#endif
 }

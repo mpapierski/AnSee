@@ -1,7 +1,7 @@
 // TimeDialog.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "AnSee.h"
 #include "TimeDialog.h"
 
@@ -15,8 +15,8 @@ static char THIS_FILE[] = __FILE__;
 // CTimeDialog dialog
 
 
-CTimeDialog::CTimeDialog(CWnd* pParent /*=NULL*/)
-	: CDialog(CTimeDialog::IDD, pParent)
+CTimeDialog::CTimeDialog(wxWindow* pParent /*=NULL*/)
+	// : CDialog(CTimeDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CTimeDialog)
 	m_iDelayTime = 0;
@@ -24,6 +24,7 @@ CTimeDialog::CTimeDialog(CWnd* pParent /*=NULL*/)
 }
 
 
+#if 0
 void CTimeDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -32,13 +33,14 @@ void CTimeDialog::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxUInt(pDX, m_iDelayTime, 10, 5000);
 	//}}AFX_DATA_MAP
 }
+#endif
 
 
-BEGIN_MESSAGE_MAP(CTimeDialog, CDialog)
+BEGIN_EVENT_TABLE(CTimeDialog, wxDialog)
 	//{{AFX_MSG_MAP(CTimeDialog)
 		// NOTE: the ClassWizard will add message map macros here
 	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
+END_EVENT_TABLE()
 
 /////////////////////////////////////////////////////////////////////////////
 // CTimeDialog message handlers

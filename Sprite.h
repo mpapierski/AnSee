@@ -12,18 +12,20 @@
 class CSprite  
 {
 public:
-	CSprite(CString cPathName, int iNthFile, CDC *pDC);
-	void DrawFullImage( CDC* pDC, int cx, int cy );
-	void DrawFrame( CDC* pDC, short sFrame );
+	CSprite(wxString cPathName, int iNthFile, wxDC *pDC);
+	void DrawFullImage( wxDC* pDC, int cx, int cy );
+	void DrawFrame( wxDC* pDC, short sFrame );
 	virtual ~CSprite();
-	LPBITMAPINFOHEADER m_bih; //bmp Á¤º¸Çì´õ
+#if 0
+	LPBITMAPINFOHEADER m_bih; //bmp ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	LPBITMAPINFO m_bmpInfo;
-	CString m_cFileSize;
+#endif
+	wxString m_cFileSize;
 	int m_iScreenX;
 	int m_iScreenY;
 	short *	m_spData;
-	LPSTR m_lpDib;
-	CDC   BufferDC;
+	char * m_lpDib;
+	wxDC * BufferDC;
 	int m_iTotalFrame;
 };
 

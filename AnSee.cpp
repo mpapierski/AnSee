@@ -1,7 +1,7 @@
 // AnSee.cpp : Defines the class behaviors for the application.
 //
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "AnSee.h"
 
 #include "MainFrm.h"
@@ -16,16 +16,16 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeApp
 
-BEGIN_MESSAGE_MAP(CAnSeeApp, CWinApp)
+BEGIN_EVENT_TABLE(CAnSeeApp, wxApp)
 	//{{AFX_MSG_MAP(CAnSeeApp)
-	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
+	//ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	//}}AFX_MSG_MAP
 	// Standard file based document commands
-	ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
+	//ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
+	//ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
 	// Standard print setup command
-	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
-END_MESSAGE_MAP()
+	//ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
+END_EVENT_TABLE()
 
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeApp construction
@@ -42,16 +42,9 @@ CAnSeeApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeApp initialization
 
-BOOL CAnSeeApp::InitInstance()
+bool CAnSeeApp::OnInit(wxEvent &)
 {
-	// Standard initialization
-
-#ifdef _AFXDLL
-	Enable3dControls();			// Call this when using MFC in a shared DLL
-#else
-	Enable3dControlsStatic();	// Call this when linking to MFC statically
-#endif
-
+#if 0
 	// Change the registry key under which our settings are stored.
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
@@ -77,7 +70,7 @@ BOOL CAnSeeApp::InitInstance()
 		return FALSE;
 	m_pMainWnd->ShowWindow(SW_SHOWMAXIMIZED);
 	m_pMainWnd->UpdateWindow();
-
+#endif
 	return TRUE;
 }
 
@@ -85,7 +78,7 @@ BOOL CAnSeeApp::InitInstance()
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
-class CAboutDlg : public CDialog
+class CAboutDlg : public wxDialog
 {
 public:
 	CAboutDlg();
@@ -98,7 +91,9 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAboutDlg)
 	protected:
+#if 0
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+#endif
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -106,35 +101,37 @@ protected:
 	//{{AFX_MSG(CAboutDlg)
 		// No message handlers
 	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+	DECLARE_EVENT_TABLE()
 };
 
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
+CAboutDlg::CAboutDlg() // : wxDialog(CAboutDlg::IDD)
 {
 	//{{AFX_DATA_INIT(CAboutDlg)
 	//}}AFX_DATA_INIT
 }
 
+#if 0
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAboutDlg)
 	//}}AFX_DATA_MAP
 }
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
+#endif
+BEGIN_EVENT_TABLE(CAboutDlg, wxDialog)
 	//{{AFX_MSG_MAP(CAboutDlg)
 		// No message handlers
 	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
+END_EVENT_TABLE()
 
 // App command to run the dialog
 void CAnSeeApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
-	aboutDlg.DoModal();
+	//aboutDlg.DoModal();
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeApp message handlers
 
+IMPLEMENT_APP(CAnSeeApp)

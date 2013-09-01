@@ -1,7 +1,7 @@
 // AnSeeView.cpp : implementation of the CAnSeeView class
 //
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "AnSee.h"
 
 #include "AnSeeDoc.h"
@@ -18,24 +18,24 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeView
 
-IMPLEMENT_DYNCREATE(CAnSeeView, CView)
+IMPLEMENT_DYNAMIC_CLASS(CAnSeeView, wxView)
 
-BEGIN_MESSAGE_MAP(CAnSeeView, CView)
+BEGIN_EVENT_TABLE(CAnSeeView, wxView)
 	//{{AFX_MSG_MAP(CAnSeeView)
-	ON_WM_RBUTTONDOWN()
-	ON_WM_KEYDOWN()
-	ON_WM_KEYUP()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_MOUSEMOVE()
-	ON_WM_LBUTTONUP()
-	ON_WM_ERASEBKGND()
-	ON_WM_TIMER()
+	//ON_WM_RBUTTONDOWN()
+	//ON_WM_KEYDOWN()
+	//ON_WM_KEYUP()
+	//ON_WM_LBUTTONDOWN()
+	//ON_WM_MOUSEMOVE()
+	//ON_WM_LBUTTONUP()
+	//ON_WM_ERASEBKGND()
+	//ON_WM_TIMER()
 	//}}AFX_MSG_MAP
 	// Standard printing commands
-	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
-END_MESSAGE_MAP()
+	//ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
+	//ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
+	//ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
+END_EVENT_TABLE()
 
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeView construction/destruction
@@ -55,23 +55,22 @@ CAnSeeView::~CAnSeeView()
 {
 }
 
-BOOL CAnSeeView::PreCreateWindow(CREATESTRUCT& cs)
-{
-	return CView::PreCreateWindow(cs);
-}
-
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeView drawing
 
-void CAnSeeView::OnDraw(CDC* pDC)
+void CAnSeeView::OnDraw(wxDC * pDC)
 {
-	RECT rt;
+	wxRect rt;
+#if 0
 	GetClientRect( &rt );
 	pDC->BitBlt( 0, 0, rt.right, rt.bottom, &BufferDC, 0, 0, SRCCOPY );
+#endif
 }
 
-void CAnSeeView::OnInitialUpdate()
+bool CAnSeeView::OnInit(wxEvent &)
 {
+	return true;
+#if 0
 	CView::OnInitialUpdate();
 	CAnSeeDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -85,11 +84,12 @@ void CAnSeeView::OnInitialUpdate()
 	bmpBuffer.DeleteObject();
 	pDoc->SetRightView( this, &BufferDC );
 	ReleaseDC(pDC);
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeView printing
-
+#if 0
 BOOL CAnSeeView::OnPreparePrinting(CPrintInfo* pInfo)
 {
 	return DoPreparePrinting(pInfo);
@@ -102,6 +102,7 @@ void CAnSeeView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 void CAnSeeView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
 }
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeView diagnostics
@@ -127,41 +128,46 @@ CAnSeeDoc* CAnSeeView::GetDocument() // non-debug version is inline
 /////////////////////////////////////////////////////////////////////////////
 // CAnSeeView message handlers
 
-void CAnSeeView::OnRButtonDown(UINT nFlags, CPoint point) 
+void CAnSeeView::OnRButtonDown(wxEvent & ev)
 {
+#if 0
 	CView::OnRButtonDown(nFlags, point);
 	ClientToScreen( &point );
 	CMenu menu;
 	menu.CreatePopupMenu();
-	menu.AppendMenu( MF_STRING, ID_FILE_OPEN, "PakÆÄÀÏ ¿­±â\t(Ctrl+&O)" );
+	menu.AppendMenu( MF_STRING, ID_FILE_OPEN, "Pakï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\t(Ctrl+&O)" );
 	CAnSeeDoc* pDoc = GetDocument();
 	if( pDoc->m_pSpr[pDoc->m_view] == NULL )
 	{
-		menu.AppendMenu( MF_GRAYED, ID_FILE_SAVE, "ASDÆÄÀÏ·Î ¾ÐÃàÇ®±â\t(Ctrl+&S)" );
-		menu.AppendMenu( MF_GRAYED, ID_EDIT_COPY, "SPD¿Í BMP·Î ¾ÐÃàÇ®±â\t(Ctrl+&C)" );
-		menu.AppendMenu( MF_GRAYED, ID_EDIT_PASTE, "PAKÆÄÀÏ ¸¸µé±â\t(Ctrl+&V)" );
-		menu.AppendMenu( MF_GRAYED, ID_EDIT_CUT, "ASDÆÄÀÏ ¹Ù²ãÄ¡±â\t(Ctrl+&X)" );
+		menu.AppendMenu( MF_GRAYED, ID_FILE_SAVE, "ASDï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½Ç®ï¿½ï¿½\t(Ctrl+&S)" );
+		menu.AppendMenu( MF_GRAYED, ID_EDIT_COPY, "SPDï¿½ï¿½ BMPï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç®ï¿½ï¿½\t(Ctrl+&C)" );
+		menu.AppendMenu( MF_GRAYED, ID_EDIT_PASTE, "PAKï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½\t(Ctrl+&V)" );
+		menu.AppendMenu( MF_GRAYED, ID_EDIT_CUT, "ASDï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½Ä¡ï¿½ï¿½\t(Ctrl+&X)" );
 	}
 	else
 	{
-		menu.AppendMenu( MF_STRING, ID_FILE_SAVE, "ASDÆÄÀÏ·Î ¾ÐÃàÇ®±â\t(Ctrl+&S)" );
-		menu.AppendMenu( MF_STRING, ID_EDIT_COPY, "SPD¿Í BMP·Î ¾ÐÃàÇ®±â\t(Ctrl+&C)" );
-		menu.AppendMenu( MF_STRING, ID_EDIT_PASTE, "PAKÆÄÀÏ ¸¸µé±â\t(Ctrl+&V)" );
-		menu.AppendMenu( MF_STRING, ID_EDIT_CUT, "ASDÆÄÀÏ ¹Ù²ãÄ¡±â\t(Ctrl+&X)" );
+		menu.AppendMenu( MF_STRING, ID_FILE_SAVE, "ASDï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½Ç®ï¿½ï¿½\t(Ctrl+&S)" );
+		menu.AppendMenu( MF_STRING, ID_EDIT_COPY, "SPDï¿½ï¿½ BMPï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç®ï¿½ï¿½\t(Ctrl+&C)" );
+		menu.AppendMenu( MF_STRING, ID_EDIT_PASTE, "PAKï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½\t(Ctrl+&V)" );
+		menu.AppendMenu( MF_STRING, ID_EDIT_CUT, "ASDï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½Ä¡ï¿½ï¿½\t(Ctrl+&X)" );
 	}
 	SetForegroundWindow();
 	menu.TrackPopupMenu( TPM_LEFTALIGN, point.x, point.y, this);
+#endif
 }
 
-void CAnSeeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CAnSeeView::OnKeyDown(wxKeyEvent & ev)
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	pDoc->OnKeyDown( nChar );
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+#endif
 }
 
-void CAnSeeView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CAnSeeView::OnKeyUp(wxKeyEvent & ev)
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	if( nChar == VK_SPACE )
 	{
@@ -185,10 +191,12 @@ void CAnSeeView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	pDoc->OnKeyUp( nChar );
 	EndWaitCursor();
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
+#endif
 }
 
 void CAnSeeView::RefreshView()
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	RECT rt;
@@ -200,14 +208,14 @@ void CAnSeeView::RefreshView()
 		if( pDoc->m_cPathName != "" )
 		{
 			status0.Format( "%d/%d", pDoc->m_CurFileIndex+1, pDoc->m_MaxFile+1 );
-			status1.Format( "ÆÄÀÏ¿À·ù" );
-			status2.Format( "ÆÄÀÏ¿À·ù" );
-			status3.Format( "ÆÄÀÏ¿À·ù" );
+			status1.Format( "ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½" );
+			status2.Format( "ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½" );
+			status3.Format( "ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½" );
 			status4.Format( "100%%" );
-			status5.Format( "PakÆÄÀÏ¿¡ ¹®Á¦°¡ ÀÖ½À´Ï´Ù." );
+			status5.Format( "Pakï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½." );
 			rt.top = 250;
 			rt.bottom = 400;
-			BufferDC.DrawText( "PakÆÄÀÏ¿¡ ¹®Á¦°¡ ÀÖ½À´Ï´Ù.", &rt, DT_CENTER );
+			BufferDC.DrawText( "Pakï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.", &rt, DT_CENTER );
 		}
 		else
 		{
@@ -255,10 +263,12 @@ void CAnSeeView::RefreshView()
 	pFrame->m_wndStatusBar.SetPaneText(5, status5 );
 	GetClientRect( &rt );
 	InvalidateRect( &rt, FALSE );
+#endif
 }
 
-void CAnSeeView::OnLButtonDown(UINT nFlags, CPoint point) 
+void CAnSeeView::OnLButtonDown(wxEvent & ev)
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	if( pDoc->m_pSpr[pDoc->m_view] == NULL ) return;
 	m_originpoint.x = point.x;
@@ -266,10 +276,12 @@ void CAnSeeView::OnLButtonDown(UINT nFlags, CPoint point)
 	m_movingpoint.x = 0;
 	m_movingpoint.y = 0;
 	CView::OnLButtonDown(nFlags, point);
+#endif
 }
 
-void CAnSeeView::OnMouseMove(UINT nFlags, CPoint point) 
+void CAnSeeView::OnMouseMove(wxEvent & ev)
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	if( pDoc->m_pSpr[pDoc->m_view] == NULL ) return;
 	if( nFlags == 1 )
@@ -279,10 +291,12 @@ void CAnSeeView::OnMouseMove(UINT nFlags, CPoint point)
 		RefreshView();
 	}
 	CView::OnMouseMove(nFlags, point);
+#endif
 }
 
-void CAnSeeView::OnLButtonUp(UINT nFlags, CPoint point) 
+void CAnSeeView::OnLButtonUp(wxEvent & ev)
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	if( pDoc->m_pSpr[pDoc->m_view] == NULL ) return;
 	m_movepoint.x = m_movepoint.x + m_movingpoint.x;
@@ -290,14 +304,18 @@ void CAnSeeView::OnLButtonUp(UINT nFlags, CPoint point)
 	m_movingpoint.x = 0;
 	m_movingpoint.y = 0;
 	CView::OnLButtonUp(nFlags, point);
+#endif
 }
 
+#if 0
 BOOL CAnSeeView::OnEraseBkgnd(CDC* pDC) 
 {
 	return FALSE;	
 	return CView::OnEraseBkgnd(pDC);
 }
+#endif
 
+#if 0
 void CAnSeeView::OnTimer(UINT nIDEvent) 
 {
 	if( nIDEvent == 1 )
@@ -310,3 +328,4 @@ void CAnSeeView::OnTimer(UINT nIDEvent)
 	
 	CView::OnTimer(nIDEvent);
 }
+#endif

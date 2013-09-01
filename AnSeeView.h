@@ -10,21 +10,21 @@
 #endif // _MSC_VER > 1000
 
 
-class CAnSeeView : public CView
+class CAnSeeView : public wxView
 {
 protected: // create from serialization only
 	CAnSeeView();
-	DECLARE_DYNCREATE(CAnSeeView)
+	DECLARE_DYNAMIC_CLASS(CAnSeeView)
 
 // Attributes
 public:
-	CDC BufferDC;
+	wxDC * BufferDC;
 	CAnSeeDoc* GetDocument();
-	CString status0, status1, status2, status3, status4, status5;
-	CPoint m_originpoint;
-	CPoint m_movepoint;
-	CPoint m_movingpoint;
-	UINT m_nTimer;
+	wxString status0, status1, status2, status3, status4, status5;
+	wxPoint m_originpoint;
+	wxPoint m_movepoint;
+	wxPoint m_movingpoint;
+	unsigned int m_nTimer;
 
 // Operations
 public:
@@ -33,13 +33,14 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAnSeeView)
 	public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void OnDraw(wxDC * pDC);  // overridden to draw this view
 	protected:
-	virtual void OnInitialUpdate(); // called first time after construct
+	virtual bool OnInit(wxEvent &); // called first time after construct
+#if 0
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+#endif
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -56,21 +57,21 @@ protected:
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CAnSeeView)
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnTimer(UINT nIDEvent);
+	void OnRButtonDown(wxEvent & ev);
+	void OnKeyDown(wxKeyEvent & ev);
+	void OnKeyUp(wxKeyEvent & ev);
+	void OnLButtonDown(wxEvent & ev);
+	void OnMouseMove(wxEvent & ev);
+	void OnLButtonUp(wxEvent & ev);
+	// BOOL OnEraseBkgnd(wxDC & pDC);
+	// void OnTimer(UINT nIDEvent);
 	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+	DECLARE_EVENT_TABLE()
 };
 
 #ifndef _DEBUG  // debug version in AnSeeView.cpp
 inline CAnSeeDoc* CAnSeeView::GetDocument()
-   { return (CAnSeeDoc*)m_pDocument; }
+   { return (CAnSeeDoc*)0; }
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

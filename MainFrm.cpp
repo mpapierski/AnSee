@@ -1,7 +1,7 @@
 // MainFrm.cpp : implementation of the CMainFrame class
 //
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "AnSee.h"
 
 #include "MainFrm.h"
@@ -19,15 +19,15 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
 
-IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
+IMPLEMENT_DYNAMIC_CLASS(CMainFrame, wxMDIParentFrame)
 
-BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
+BEGIN_EVENT_TABLE(CMainFrame, wxMDIParentFrame)
 	//{{AFX_MSG_MAP(CMainFrame)
-	ON_WM_CREATE()
+	//ON_WM_CREATE()
 	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
+END_EVENT_TABLE()
 
-static UINT indicators[] =
+/*static int indicators[] =
 {
 	ID_SEPARATOR,
 	ID_SEPARATOR,
@@ -35,7 +35,7 @@ static UINT indicators[] =
 	ID_SEPARATOR,
 	ID_SEPARATOR,
 	ID_SEPARATOR,
-};
+};*/
 
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame construction/destruction
@@ -48,8 +48,11 @@ CMainFrame::~CMainFrame()
 {
 }
 
-int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+bool CMainFrame::OnCreate(wxDocument * doc, long flags)
 {
+	return true;
+#if 0
+
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	
@@ -82,11 +85,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar(&m_wndToolBar);
 
 	return 0;
+#endif
 }
 
-BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
-	CCreateContext* pContext)
+wxMDIClientWindow * CMainFrame::OnCreateClient()
 {
+#if 0
 	// create splitter window
 	if (!m_wndSplitter.CreateStatic(this, 1, 2))
 		return FALSE;
@@ -98,16 +102,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
 		return FALSE;
 	}
 	return TRUE;
-}
-
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
-{
-	if( !CFrameWnd::PreCreateWindow(cs) )
-		return FALSE;
-	cs.style = WS_OVERLAPPED | WS_CAPTION | FWS_ADDTOTITLE
-		| WS_THICKFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_MAXIMIZE;
-
-	return TRUE;
+#endif
+	return 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -131,7 +127,10 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 CAnSeeView* CMainFrame::GetRightPane()
 {
+#if 0
 	CWnd* pWnd = m_wndSplitter.GetPane(0, 1);
 	CAnSeeView* pView = DYNAMIC_DOWNCAST(CAnSeeView, pWnd);
 	return pView;
+#endif
+	return 0;
 }

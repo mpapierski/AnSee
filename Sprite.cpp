@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "AnSee.h"
 #include "Sprite.h"
 
@@ -16,8 +16,9 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CSprite::CSprite(CString cPathName, int iNthFile, CDC *pDC)
+CSprite::CSprite(wxString cPathName, int iNthFile, wxDC *pDC)
 {
+#if 0
     m_lpDib = NULL;
 	m_spData = NULL;
 	char cBuff[101];
@@ -25,23 +26,23 @@ CSprite::CSprite(CString cPathName, int iNthFile, CDC *pDC)
 	DWORD nCount, dwASDfileLoc, dwASDfileSize, dwBitmapFileStartLoc, dwBitmapFileSize;
 	HANDLE hFileRead = CreateFile( cPathName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 	if( hFileRead == INVALID_HANDLE_VALUE ) return;
-	// ÀÌÁ¦ ½ºÇÁ¶óÀÌÆ® ÆÄÀÏ(*.ASD)ÀÌ ½ÃÀÛÇÏ´Â À§Ä¡¸¦ Ã£´Â´Ù. 
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½(*.ASD)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Ã£ï¿½Â´ï¿½. 
 	SetFilePointer(hFileRead, 24 + iNthFile*8, NULL, FILE_BEGIN);
 	ReadFile(hFileRead, (char *)&dwASDfileLoc,  4, &nCount, NULL);
 	ReadFile(hFileRead, (char *)&dwASDfileSize, 4, &nCount, NULL);
-	// ½ºÇÁ¶óÀÌÆ® È­ÀÏ Çì´õ¸¦ ÀÐ¾î È®ÀÎÇÑ´Ù. 
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½. 
 	SetFilePointer(hFileRead, dwASDfileLoc, NULL, FILE_BEGIN);
 	ReadFile(hFileRead, (char *)cBuff,  100, &nCount, NULL);
-	// Çì´õ°¡ ÀÏÄ¡ÇÏÁö ¾ÊÀ¸¸é ÀÐÀ» ¼ö ¾ø´Ù.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½.
 	if (memcmp(cBuff, "<Sprite File Header>", 20) != 0) {
 		CloseHandle(hFileRead);
 		return;
 	}
-	// ÀüÃ¼ ÇÁ·¹ÀÓ¼ö ÀÐ´Â´Ù.
+	// ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¼ï¿½ ï¿½Ð´Â´ï¿½.
 	ReadFile(hFileRead, (char *)&m_iTotalFrame,  4, &nCount, NULL);
 	m_spData = new short[m_iTotalFrame*6];
 	ReadFile(hFileRead, m_spData, 12*m_iTotalFrame, &nCount, NULL);
-	// ºñÆ®¸Ê È­ÀÏÀÇ À§Ä¡¸¦ ¹Ì¸® °è»êÇØ ³õ´Â´Ù.
+	// ï¿½ï¿½Æ®ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½.
 	dwBitmapFileStartLoc = dwASDfileLoc  + (108 + (12*m_iTotalFrame));
 	dwBitmapFileSize     = dwASDfileSize - (108 + (12*m_iTotalFrame));
 	SetFilePointer( hFileRead, dwBitmapFileStartLoc, NULL, FILE_BEGIN );
@@ -73,15 +74,19 @@ CSprite::CSprite(CString cPathName, int iNthFile, CDC *pDC)
 	if( BufferDC.SelectObject(&bmpBuffer) == NULL ) return;
 	bmpBuffer.DeleteObject();
 	SetDIBitsToDevice( BufferDC.GetSafeHdc(), 0, 0, m_iScreenX, m_iScreenY, 0, 0, 0, m_iScreenY, m_lpDib+fh.bfOffBits-14, m_bmpInfo, DIB_RGB_COLORS );
+#endif
 }
 
-void CSprite::DrawFullImage( CDC* pDC, int cx, int cy )
+void CSprite::DrawFullImage( wxDC* pDC, int cx, int cy )
 {
+#if 0
 	pDC->BitBlt( cx, cy, m_iScreenX, m_iScreenY, &BufferDC, 0, 0, SRCCOPY );
+#endif
 }
 
-void CSprite::DrawFrame( CDC* pDC, short sFrame )
+void CSprite::DrawFrame( wxDC* pDC, short sFrame )
 {
+#if 0
 	if( sFrame > m_iTotalFrame-1 ) return;
 	short sTmp, sx, sy, szx, szy, pvx, pvy;
 	sTmp = sFrame;
@@ -94,10 +99,12 @@ void CSprite::DrawFrame( CDC* pDC, short sFrame )
 	pvx = *(m_spData + sTmp + 4);
 	pvy = *(m_spData + sTmp + 5);
 	pDC->BitBlt( 200+pvx, 200+pvy, szx, szy, &BufferDC, sx, sy, SRCCOPY );
+#endif
 }
 
 CSprite::~CSprite()
 {
+#if 0
 	if( m_lpDib != NULL )
 	{
 		delete[] m_lpDib;
@@ -108,4 +115,5 @@ CSprite::~CSprite()
 		delete[] m_spData;
 		m_spData = NULL;
 	}
+#endif
 }

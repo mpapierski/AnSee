@@ -19,26 +19,27 @@
 // See AnSee.cpp for the implementation of this class
 //
 
-class CAnSeeApp : public CWinApp
+class CAnSeeApp : public wxApp
 {
 public:
 	CAnSeeApp();
-	CString m_strCommand;
+	wxString m_strCommand;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAnSeeApp)
 	public:
-	virtual BOOL InitInstance();
+	virtual bool OnInit(wxEvent &);
 	//}}AFX_VIRTUAL
 
 // Implementation
 	//{{AFX_MSG(CAnSeeApp)
-	afx_msg void OnAppAbout();
+	void OnAppAbout();
 	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+	DECLARE_EVENT_TABLE()
 };
 
+DECLARE_APP(CAnSeeApp)
 
 /////////////////////////////////////////////////////////////////////////////
 

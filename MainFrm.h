@@ -9,18 +9,21 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include <wx/docview.h>
+#include <wx/splitter.h>
+
 class CAnSeeView;
 
-class CMainFrame : public CFrameWnd
+class CMainFrame : public wxMDIParentFrame
 {
 	
 protected: // create from serialization only
 	CMainFrame();
-	DECLARE_DYNCREATE(CMainFrame)
+	DECLARE_DYNAMIC_CLASS(CMainFrame)
 
 // Attributes
 protected:
-	CSplitterWnd m_wndSplitter;
+	wxSplitterWindow * m_wndSplitter;
 public:
 
 // Operations
@@ -30,14 +33,13 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CMainFrame)
 	public:
-	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	wxMDIClientWindow * OnCreateClient();
 	//}}AFX_VIRTUAL
 
 // Implementation
 public:
 	virtual ~CMainFrame();
-	CStatusBar  m_wndStatusBar;
+	wxStatusBar * m_wndStatusBar;
 	CAnSeeView* GetRightPane();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -45,14 +47,14 @@ public:
 #endif
 
 protected:  // control bar embedded members
-	CToolBar    m_wndToolBar;
+	wxToolBar    m_wndToolBar;
 
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CMainFrame)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	virtual bool OnCreate(wxDocument * doc, long flags);
 	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+	DECLARE_EVENT_TABLE()
 };
 
 /////////////////////////////////////////////////////////////////////////////

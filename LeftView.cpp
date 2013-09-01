@@ -1,7 +1,7 @@
 // LeftView.cpp : implementation of the CLeftView class
 //
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "AnSee.h"
 
 #include "AnSeeDoc.h"
@@ -16,15 +16,15 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CLeftView
 
-IMPLEMENT_DYNCREATE(CLeftView, CTreeView)
+IMPLEMENT_DYNAMIC_CLASS(CLeftView, wxTreeCtrl)
 
-BEGIN_MESSAGE_MAP(CLeftView, CTreeView)
+BEGIN_EVENT_TABLE(CLeftView, wxTreeCtrl)
 	//{{AFX_MSG_MAP(CLeftView)
-	ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
-	ON_WM_KEYDOWN()
+	//ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
+	//ON_WM_KEYDOWN()
 	//}}AFX_MSG_MAP
 	// Standard printing commands
-END_MESSAGE_MAP()
+END_EVENT_TABLE()
 
 /////////////////////////////////////////////////////////////////////////////
 // CLeftView construction/destruction
@@ -37,20 +37,16 @@ CLeftView::~CLeftView()
 {
 }
 
-BOOL CLeftView::PreCreateWindow(CREATESTRUCT& cs)
-{
-	cs.style = WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER | TVS_HASBUTTONS /*| TVS_LINESATROOT*/ | TVS_HASLINES | TVS_SHOWSELALWAYS;
-	return CTreeView::PreCreateWindow(cs);
-}
-
 /////////////////////////////////////////////////////////////////////////////
 // CLeftView drawing
 
-void CLeftView::OnDraw(CDC* pDC)
+void CLeftView::OnDraw(wxDC* pDC)
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	MessageBox( "hehe" );
+#endif
 }
 
 
@@ -59,11 +55,13 @@ void CLeftView::OnDraw(CDC* pDC)
 
 void CLeftView::OnInitialUpdate()
 {
+#if 0
 	CTreeCtrl& pTree = GetTreeCtrl();
 	CTreeView::OnInitialUpdate();
 	CAnSeeDoc* pDoc = GetDocument();
 	pDoc->SetLeftView( this );
 	if( pDoc->m_cPathName != "" ) ChangeTree();
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -92,6 +90,7 @@ CAnSeeDoc* CLeftView::GetDocument() // non-debug version is inline
 
 void CLeftView::ChangeTree()
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	CTreeCtrl& pTree = GetTreeCtrl();
 	pTree.DeleteAllItems();
@@ -123,10 +122,12 @@ void CLeftView::ChangeTree()
 //		pTree.SetCheck( hItem );
 	}
 	pTree.Expand( hRoot, TVE_EXPAND );
+#endif
 }
 
-void CLeftView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult) 
+void CLeftView::OnSelchanged(wxEvent & ev)
 {
+#if 0
 	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
 	// TODO: Add your control notification handler code here
 	CAnSeeDoc* pDoc = GetDocument();
@@ -147,18 +148,22 @@ void CLeftView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 		}
 	}
 	*pResult = 0;
+#endif
 }
 
-void CLeftView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CLeftView::OnKeyDown(wxKeyEvent & ev)
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	if( nChar == VK_SPACE || nChar == VK_LEFT  || nChar == VK_RIGHT )
 	pDoc->OnKeyDown( nChar );
 	if( nChar != VK_LEFT ) CTreeView::OnKeyDown(nChar, nRepCnt, nFlags);
+#endif
 }
 
 void CLeftView::SetSelectedItem()
 {
+#if 0
 	CAnSeeDoc* pDoc = GetDocument();
 	CTreeCtrl& pTree = GetTreeCtrl();
 	HTREEITEM hRoot = pTree.GetRootItem();
@@ -181,4 +186,5 @@ void CLeftView::SetSelectedItem()
 			return;
 		}
 	}
+#endif
 }

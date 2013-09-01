@@ -9,13 +9,15 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include <wx/treectrl.h>
+
 class CAnSeeDoc;
 
-class CLeftView : public CTreeView
+class CLeftView : public wxTreeCtrl
 {
 protected: // create from serialization only
 	CLeftView();
-	DECLARE_DYNCREATE(CLeftView)
+	DECLARE_DYNAMIC_CLASS(CLeftView)
 
 // Attributes
 public:
@@ -30,8 +32,10 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CLeftView)
 	public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void OnDraw(wxDC * pDC);  // overridden to draw this view
+#if 0
+	virtual bool PreCreateWindow(CREATESTRUCT& cs);
+#endif
 	protected:
 	virtual void OnInitialUpdate(); // called first time after construct
 	//}}AFX_VIRTUAL
@@ -49,15 +53,15 @@ protected:
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CLeftView)
-	afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	void OnSelchanged(wxEvent & ev);
+	void OnKeyDown(wxKeyEvent & ev);
 	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+	DECLARE_EVENT_TABLE()
 };
 
 #ifndef _DEBUG  // debug version in LeftView.cpp
 inline CAnSeeDoc* CLeftView::GetDocument()
-   { return (CAnSeeDoc*)m_pDocument; }
+   { return (CAnSeeDoc*)0; }
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
